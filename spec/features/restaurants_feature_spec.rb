@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 feature 'restaurants' do
+
+  before(:each) do
+    user = FactoryGirl.create(:user)
+    visit '/users/sign_in'
+    fill_in 'Email', with: 'test@email.com'
+    fill_in 'Password', with: 'password'
+    click_button 'Log in'
+  end
   context'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -79,8 +87,18 @@ feature 'restaurants' do
           expect(page).not_to have_css 'h2', text: 'kf'
           expect(page).to have_content 'error'
         end
-    end    
+    end
 
+    context 'user not signed in' do
+
+      scenario 'user must be signed in to create a restaurant' do
+
+        visit '/restaurants'
+        click_link 'Add a restaurant'
+        expect(page).to have_content 'You need to sign in or sign up before continuing.'
+        expect(current_path).to eq '/users/sign_in'
+      end
+    end
   end
 
 
