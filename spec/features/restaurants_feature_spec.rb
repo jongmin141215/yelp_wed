@@ -94,6 +94,7 @@ feature 'restaurants' do
       scenario 'user must be signed in to create a restaurant' do
 
         visit '/restaurants'
+        click_link 'Sign out'
         click_link 'Add a restaurant'
         expect(page).to have_content 'You need to sign in or sign up before continuing.'
         expect(current_path).to eq '/users/sign_in'
