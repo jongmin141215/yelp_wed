@@ -21,7 +21,10 @@
         <% restaurant.reviews.each do |review| %>
           <li>
             <%= review.thoughts %>, <strong><%= review.rating %></strong>/5
+            <% if current_user && restaurant.user_id == current_user.id %>
             <%= link_to "Delete this review", restaurant_review_path(restaurant, review), method: :delete %>
+            <% end %>
+
           </li>
         <% end %>
       </ul>
