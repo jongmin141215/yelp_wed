@@ -85,6 +85,8 @@ feature 'restaurants' do
       fill_in 'Password', with: 'password'
       click_button 'Log in'
       expect(page).not_to have_link 'Delete KFC'
+      # click_link 'Delete KFC'
+      # expect(page).to have_content 'You can only delete your own restaurants'
     end
   end
 

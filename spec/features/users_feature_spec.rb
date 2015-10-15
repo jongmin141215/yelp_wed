@@ -55,5 +55,6 @@ feature 'Users can only review a restaurant once' do
     click_button 'Leave Review'
 
     expect(page).not_to have_link 'Review KFC'
+
   end
 end
