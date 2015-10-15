@@ -6,10 +6,8 @@ feature 'review' do
 
   before(:each) do
     @user1 = create(:user)
-    visit '/users/sign_in'
-    fill_in 'Email', with: 'test@email.com'
-    fill_in 'Password', with: 'password'
-    click_button 'Log in'
+    sign_in(@user1)
+    @user2 = create(:user, email: 'test2@email.com')
     @user1.restaurants.create name: 'KFC'
   end
 
@@ -44,11 +42,7 @@ feature 'review' do
 
     scenario 'user can only delete their own review' do
       click_link 'Sign out'
-      @user2 = create(:user2)
-      visit '/users/sign_in'
-      fill_in 'Email', with: 'test2@email.com'
-      fill_in 'Password', with: 'password'
-      click_button 'Log in'
+      sign_in(@user2)
       expect(page).not_to have_link 'Delete this review'
     end
 

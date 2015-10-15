@@ -3,12 +3,13 @@ require 'rails_helper'
 feature 'restaurants' do
 
   before(:each) do
-    @user = FactoryGirl.create(:user)
-    visit '/users/sign_in'
-    fill_in 'Email', with: 'test@email.com'
-    fill_in 'Password', with: 'password'
-    click_button 'Log in'
+    @user = create(:user)
+    sign_in(@user)
+    @user2 = create(:user, email: 'test2@email.com')
   end
+
+
+
   context'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -66,12 +67,7 @@ feature 'restaurants' do
       restaurant = @user.restaurants.create name: 'KFC'
       visit '/restaurants'
       click_link 'Sign out'
-
-      @user2 = create(:user2)
-      visit '/users/sign_in'
-      fill_in 'Email', with: 'test2@email.com'
-      fill_in 'Password', with: 'password'
-      click_button 'Log in'
+      sign_in(@user2)
       expect(page).not_to have_link 'Edit KFC'
     end
   end
@@ -91,12 +87,7 @@ feature 'restaurants' do
       @user.restaurants.create name: 'KFC'
       visit '/restaurants'
       click_link 'Sign out'
-
-      @user2 = create(:user2)
-      visit '/users/sign_in'
-      fill_in 'Email', with: 'test2@email.com'
-      fill_in 'Password', with: 'password'
-      click_button 'Log in'
+      sign_in(@user2)
       expect(page).not_to have_link 'Delete KFC'
       # click_link 'Delete KFC'
       # expect(page).to have_content 'You can only delete your own restaurants'

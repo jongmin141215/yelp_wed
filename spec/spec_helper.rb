@@ -16,6 +16,7 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require_relative './helpers/session'
 require 'factory_girl_rails'
 require 'devise'
 RSpec.configure do |config|
@@ -24,6 +25,7 @@ RSpec.configure do |config|
   # assertions if you prefer.
   config.include Devise::TestHelpers, :type => :controller
   config.include FactoryGirl::Syntax::Methods
+  config.include SessionHelpers
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
