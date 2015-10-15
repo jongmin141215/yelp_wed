@@ -4,6 +4,8 @@ describe Restaurant, type: :model do
 
   it { is_expected.to have_many :reviews }
 
+  it { is_expected.to belong_to :user }
+
   it { should have_many(:reviews).dependent(:destroy) }
 
   it 'is not valid with a name of less than three characters' do

@@ -104,7 +104,7 @@ feature 'restaurants' do
     before {Restaurant.create name: 'KFC'} # need a way of associating this creat with a user
     scenario 'user tries to edit a restaurant that they did not add' do
       visit '/restaurants'
-      click_link ''
+
     end
   end
 
