@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-
-
 feature 'review' do
 
   before(:each) do
@@ -13,12 +11,7 @@ feature 'review' do
 
   context 'creating reviews' do
     scenario 'allows a user to leave a review using a form ' do
-      visit '/restaurants'
-      click_link 'Review KFC'
-      fill_in "Thoughts", with: "so so"
-      select '3', from: 'Rating'
-      click_button 'Leave Review'
-
+      create_review
       expect(current_path).to eq('/restaurants')
       expect(page).to have_content('so so')
     end
@@ -26,13 +19,8 @@ feature 'review' do
 
   context 'deleting reviews' do
     before(:each) do
-      visit '/restaurants'
-      click_link 'Review KFC'
-      fill_in "Thoughts", with: "so so"
-      select '3', from: 'Rating'
-      click_button 'Leave Review'
+      create_review
     end
-
 
     scenario 'user can delete a review' do
       click_link 'Delete this review'
