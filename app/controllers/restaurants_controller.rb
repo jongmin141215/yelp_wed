@@ -28,8 +28,14 @@ class RestaurantsController < ApplicationController
 
   def update
     @restaurant = Restaurant.find(params[:id])
-    @restaurant.update(restaurant_params)
-    redirect_to '/restaurants'
+    if @restaurant.user_id == current_user.id
+      @restaurant.update(restaurant_params)
+      flash[:notice] = 'Restaurant updated successfully'
+      redirect_to '/restaurants'
+    else
+      flash[:notice] = 'You can only edit your own restaurant'
+      redirect_to '/restaurants'
+    end
   end
 
   def destroy

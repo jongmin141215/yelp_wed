@@ -61,6 +61,19 @@ feature 'restaurants' do
       expect(page).to have_content 'Kentucky Fried Chicken'
       expect(current_path).to eq '/restaurants'
     end
+
+    scenario 'users can only edit their own restaurants' do
+      restaurant = @user.restaurants.create name: 'KFC'
+      visit '/restaurants'
+      click_link 'Sign out'
+
+      @user2 = create(:user2)
+      visit '/users/sign_in'
+      fill_in 'Email', with: 'test2@email.com'
+      fill_in 'Password', with: 'password'
+      click_button 'Log in'
+      expect(page).not_to have_link 'Edit KFC'
+    end
   end
 
   context 'deleting restaurants' do

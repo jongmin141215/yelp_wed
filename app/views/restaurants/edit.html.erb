@@ -1,5 +1,7 @@
-<%= form_for @restaurant do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.submit %>
+<% if @restaurant.user_id == current_user.id %>
+  <%= form_for @restaurant do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <%= f.submit %>
+  <% end %>
 <% end %>
