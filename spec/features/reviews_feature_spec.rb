@@ -11,28 +11,53 @@ feature 'review' do
 
   context 'creating reviews' do
     scenario 'allows a user to leave a review using a form ' do
-      create_review
+      visit '/restaurants'
+      click_link 'Review KFC'
+      fill_in "Thoughts", with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
       expect(current_path).to eq('/restaurants')
       expect(page).to have_content('so so')
     end
   end
 
   context 'deleting reviews' do
-    before(:each) do
-      create_review
-    end
-
+  
     scenario 'user can delete a review' do
+      visit '/restaurants'
+      click_link 'Review KFC'
+      fill_in "Thoughts", with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
       click_link 'Delete this review'
       expect(page).not_to have_content "so so"
       expect(page).not_to have_link 'Delete this review'
     end
 
-    scenario 'user can only delete their own review' do
+    scenario 'other users cannnot see the "Delete this review"' do
+      visit '/restaurants'
+      click_link 'Review KFC'
+      fill_in "Thoughts", with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
       click_link 'Sign out'
       sign_in(@user2)
       expect(page).not_to have_link 'Delete this review'
     end
+
+    scenario 'The user who created the restaurant cannot see delete review link from other users' do
+      click_link 'Sign out'
+      sign_in(@user2)
+      visit '/restaurants'
+      click_link 'Review KFC'
+      fill_in "Thoughts", with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
+      click_link 'Sign out'
+      sign_in(@user1)
+      expect(page).not_to have_link 'Delete this review'
+    end
+
 
   end
 
