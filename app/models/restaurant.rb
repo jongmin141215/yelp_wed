@@ -6,4 +6,8 @@ class Restaurant < ActiveRecord::Base
   def build_review params, user
     self.reviews.create(thoughts: params["thoughts"], rating: params["rating"], user_id: user.id)
   end
+
+  def self.build_with_user(params, user)
+    self.new(name: params['name'], user_id: user.id)
+  end
 end

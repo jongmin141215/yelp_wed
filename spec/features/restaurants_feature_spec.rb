@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'restaurants' do
 
   before(:each) do
-    user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:user)
     visit '/users/sign_in'
     fill_in 'Email', with: 'test@email.com'
     fill_in 'Password', with: 'password'
@@ -18,11 +18,9 @@ feature 'restaurants' do
   end
 
   context 'restaurants have been added' do
-    before do
-      Restaurant.create(name: 'KFC')
-    end
 
     scenario 'display restaurants' do
+      @user.restaurants.create name: 'KFC'
       visit '/restaurants'
       expect(page).to have_content('KFC')
       expect(page).not_to have_content('No restaurants yet')
@@ -41,21 +39,21 @@ feature 'restaurants' do
   end
 
   context 'viewing restaurants' do
-    let!(:kfc){Restaurant.create(name:'KFC')}
 
     scenario 'lets a user view a restaurant' do
+      restaurant = @user.restaurants.create name: 'KFC'
       visit '/restaurants'
       click_link 'KFC'
       expect(page).to have_content 'KFC'
-      expect(current_path).to eq("/restaurants/#{kfc.id}")
+      expect(current_path).to eq("/restaurants/#{restaurant.id}")
     end
   end
 
 
   context 'editing restaurants' do
-    before {Restaurant.create name: 'KFC'}
 
     scenario 'let a user edit a restaurant' do
+      @user.restaurants.create name: 'KFC'
       visit '/restaurants'
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
@@ -66,13 +64,27 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-    before {Restaurant.create name: 'KFC'}
+
 
     scenario 'removes a restaurant when a user clicks a delete link' do
+      @user.restaurants.create name: 'KFC'
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
+    end
+
+    scenario 'user can only delete their own restaurant' do
+      @user.restaurants.create name: 'KFC'
+      visit '/restaurants'
+      click_link 'Sign out'
+
+      @user2 = create(:user2)
+      visit '/users/sign_in'
+      fill_in 'Email', with: 'test2@email.com'
+      fill_in 'Password', with: 'password'
+      click_button 'Log in'
+      expect(page).not_to have_link 'Delete KFC'
     end
   end
 
@@ -101,11 +113,11 @@ feature 'restaurants' do
       end
     end
 
-    before {Restaurant.create name: 'KFC'} # need a way of associating this creat with a user
-    scenario 'user tries to edit a restaurant that they did not add' do
-      visit '/restaurants'
-
-    end
+    # before {Restaurant.create name: 'KFC'} # need a way of associating this creat with a user
+    # scenario 'user tries to edit a restaurant that they did not add' do
+    #   visit '/restaurants'
+    #
+    # end
   end
 
 
