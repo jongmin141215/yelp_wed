@@ -31,4 +31,8 @@ class User < ActiveRecord::Base
       redirect_to "/users/auth/facebook?auth_type=rerequest&scope=email"
     end
   end
+
+  def has_reviewed?(restaurant)
+    reviewed_restaurants.include? restaurant
+  end
 end
