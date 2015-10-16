@@ -49,6 +49,8 @@ group :development do
 end
 
 group :test do
+  gem 'poltergeist'
+  gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'rspec-collection_matchers'
