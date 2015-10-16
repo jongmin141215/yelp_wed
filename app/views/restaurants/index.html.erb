@@ -19,6 +19,8 @@
             <% if current_user && review.user_id == current_user.id %>
             <%= link_to "Delete this review", review_path(review), method: :delete %>
             <% end %>
+            <%= link_to 'Endorse Review', review_endorsements_path(review), method: :post %>
+            <%= pluralize review.endorsements.length, 'endorsement' %>
           </li>
         <% end %>
       </ul>
