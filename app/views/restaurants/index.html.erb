@@ -20,8 +20,8 @@
             <%= link_to "Delete this review", review_path(review), method: :delete %>
             <% end %>
 
-              <%= link_to 'Endorse Review', review_endorsements_path(review), method: :post %>
-              <%= pluralize review.endorsements.length, 'endorsement' %>
+              <%= link_to 'Endorse Review', review_endorsements_path(review), class: 'endorsements-link' %>
+              <span class="endorsements_count"> <%= review.endorsements.count %></span> <%= 'endorsement'.pluralize(review.endorsements.length) %>
           </li>
         <% end %>
       </ul>
