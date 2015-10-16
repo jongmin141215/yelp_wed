@@ -10,7 +10,7 @@
       <%= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant) %>
     <% end %>
     <h3>Reviews for <%= restaurant.name %></h3>
-    <h3>Average rating: </h3><%= restaurant.average_rating %>
+    <h3>Average rating: </h3><%= star_rating(restaurant.average_rating) %>
     <% if restaurant.reviews.any? %>
       <ul>
         <% restaurant.reviews.each do |review| %>
