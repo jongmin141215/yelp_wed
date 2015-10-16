@@ -12,10 +12,13 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
 
 
-  resources :restaurants do
-    resources :reviews
+  resources :restaurants, shallow: true do
+    resources :reviews do
+      resources :endorsements
+    end
   end
-  get 'restaurants' => 'restaurants#index'
+
+
 
   # get '/restaurants/new' => 'restaurants#new'
   # post 'restaurants' => 'restaurants#index'
